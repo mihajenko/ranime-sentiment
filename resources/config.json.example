@@ -1,0 +1,22 @@
+{
+  "client_id": "<CLIENT_ID>",
+  "client_secret": "<CLIENT_SECRET>",
+  "user_agent": "Python3:<CLIENT_ID>:v0.1 (by /u/<USERNAME>)",
+  "username": "<USERNAME>",
+  "password": "<PASSWORD>",
+  "articleURLs": [
+    "https://www.reddit.com/r/anime/comments/7pjiou/spoilers_violet_evergarden_episode_1_discussion",
+    "https://www.reddit.com/r/anime/comments/7r50ai/spoilers_violet_evergarden_episode_2_discussion",
+    "https://www.reddit.com/r/anime/comments/7srdzs/spoilers_violet_evergarden_episode_3_discussion",
+    "https://www.reddit.com/r/anime/comments/7udw0y/spoilers_violet_evergarden_episode_4_discussion",
+    "https://www.reddit.com/r/anime/comments/7w03yv/spoilers_violet_evergarden_episode_5_discussion",
+    "https://www.reddit.com/r/anime/comments/7xm70y/spoilers_violet_evergarden_episode_6_discussion",
+    "https://www.reddit.com/r/anime/comments/7z9ke7/spoilers_violet_evergarden_episode_7_discussion",
+    "https://www.reddit.com/r/anime/comments/810g2h/spoilers_violet_evergarden_episode_8_discussion",
+    "https://www.reddit.com/r/anime/comments/82sfzv/spoilers_violet_evergarden_episode_9_discussion",
+    "https://www.reddit.com/r/anime/comments/84hz0x/spoilers_violet_evergarden_episode_10_discussion",
+    "https://www.reddit.com/r/anime/comments/869nn6/spoilers_violet_evergarden_episode_11_discussion",
+    "https://www.reddit.com/r/anime/comments/87zekq/spoilers_violet_evergarden_episode_12_discussion",
+    "https://www.reddit.com/r/anime/comments/89v6on/spoilers_violet_evergarden_episode_13_discussion"
+  ]
+}
