@@ -1,11 +1,7 @@
 import json
 import os
-import re
 
 import praw
-
-# episode number pattern
-_num_p = re.compile(r'episode_([0-9]+)_', flags=re.I | re.U)
 
 
 # import Reddit credentials (app & user)
@@ -36,12 +32,10 @@ SAVE_DIR = os.path.join(PROJECT_DIR, 'comments')
 saved_comments = set(os.listdir(SAVE_DIR))
 
 
-# get the comment forest
-for url in article_urls:
-    # get article object
+# mark URLs as consecutive episodes
+for ep_num, url in enumerate(article_urls, start=1):
+    # get the comment forest
     article = reddit.submission(url=url)
-    # get episode number
-    ep_num = int(_num_p.search(url).group(1))
 
     # load comments
     comments = article.comments

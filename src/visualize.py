@@ -16,7 +16,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 PROJECT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 LOAD_DIR = os.path.join(PROJECT_DIR, 'comments')
 
-
+# init plotter
+sns.set()
 # Markdown parser
 markdown = mistune.Markdown()
 # init sentiment analyzer
@@ -65,18 +66,18 @@ def parse_markdown(md_text):
     ])
 
 
-def main():
-    """Main procedure."""
+def plot(path, color='black', top_users=False, avg_sentiment=False):
+    """Main plotting procedure."""
 
     # list of JSON comment files to open
-    fns = os.listdir(LOAD_DIR)
+    fns = os.listdir(path)
 
     # count user posts
-    user_post_count = Counter()
+    post_counts = Counter()
     for fn in fns:
         # split username from filename
         user = fn.split('__', 1)[0]
-        user_post_count[user] += 1
+        post_counts[user] += 1
 
     # per-episode store (users can post several replies per episode thread)
     episode_store = defaultdict(list)
@@ -84,13 +85,8 @@ def main():
     for fn in fns:
         # split username from filename
         user = fn.split('__', 1)[0]
-
-        # skip users with less than 10 episode impressions
-        if user_post_count[user] < 10:
-            continue
-
         # open comment info in json
-        fn = os.path.join(LOAD_DIR, fn)
+        fn = os.path.join(path, fn)
         with open(fn, 'r') as fp:
             json_data = json.load(fp)
 
@@ -113,8 +109,6 @@ def main():
 
         # join texts and calculate sentiment on it
         text = '\n\n'.join(texts)
-
-        # get sentiment (per sentence)
         sent = get_sentiment(text)
         if not sent:
             continue
@@ -128,15 +122,33 @@ def main():
 
     # construct DataFrame from the collected data
     df = pandas.DataFrame(data)
-    # init seaborn
-    sns.set()
-    # plot the linear regression lines for each user
-    sns.lmplot(x='episode', y='sentiment', hue='user', data=df,
-               truncate=True, size=10, legend_out=True)
 
-    # save the plot to an image
-    plt.savefig('viz.png', dpi=300)
+    if top_users:
+        # generate user post counts
+        post_counts = df['user'].value_counts(sort=True, ascending=True)
+        # get 15 most active users
+        users = list(post_counts.iloc[-15:].index)
+        # filter DataFrame by users with most posts
+        df_most_active = df.loc[df['user'].isin(users)]
+        # plot the linear regression lines for each user
+        sns.lmplot(x='episode', y='sentiment', hue='user', data=df_most_active,
+                   truncate=True, size=10, legend_out=True)
+
+    # calculate average sentiment (per episode) of all users
+    avg_sent_df = df.groupby('episode').mean()
+    if avg_sentiment:
+        sns.tsplot(data=avg_sent_df['sentiment'], ci="sd", color=color)
+
+    return avg_sent_df
+
+
+def save_visualization(path, clear_plot=False):
+    """Save the plot to an image file."""
+    if clear_plot:
+        plt.clf()
+    plt.savefig(path, dpi=300)
 
 
 if __name__ == '__main__':
-    main()
+    plot(LOAD_DIR, top_users=True, avg_sentiment=True)
+    save_visualization('viz.png')
