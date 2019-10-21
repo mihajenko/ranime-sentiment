@@ -6,7 +6,7 @@ kiwisolver==1.0.1
 lxml==4.2.1
 matplotlib==2.2.2
 mistune==0.8.3
-nltk==3.2.5
+nltk==3.4.5
 numpy==1.14.2
 pandas==0.22.0
 praw==5.4.0
